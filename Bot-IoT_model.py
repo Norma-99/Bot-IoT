@@ -1,12 +1,11 @@
-import keras
+import tensorflow
+from tensorflow import keras
 
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
-from keras.optimizers import SGD
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.optimizers import SGD
 
 from sklearn.preprocessing import StandardScaler
-
-import matplotlib.pyplot as plt
 
 #from sklearn.preprocessing import StandardScaler
 
@@ -37,9 +36,10 @@ def classification_model():
 
 # build the model
 model = classification_model()
+model.summary()
 
 # fit the model
-opt = keras.optimizers.SGD(lr=0.1)
+# opt = keras.optimizers.SGD(lr=0.1)
 model.compile(optimizer="SGD", loss='binary_crossentropy', metrics=['accuracy'])
 model.fit(x_train, y_train, validation_data=(x_test, y_test), batch_size=100, epochs=5, verbose=2)
 

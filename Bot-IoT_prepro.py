@@ -1,15 +1,15 @@
-import keras
+import tensorflow
+from tensorflow import keras
 
 import pickle
 import joblib
 
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
-from keras.optimizers import SGD
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.optimizers import SGD
 
 from sklearn.preprocessing import StandardScaler
 
-import matplotlib.pyplot as plt
 
 #from sklearn.preprocessing import StandardScaler
 
@@ -17,8 +17,8 @@ import numpy as np
 import pandas as pd
 
 
-train = pd.read_csv('./datasets/Best_Training.csv')
-test = pd.read_csv('./datasets/Best_Testing.csv')
+train = pd.read_csv('datasets/Best_Training.csv')
+test = pd.read_csv('datasets/Best_Testing.csv')
 """Recopilar dataset"""
 
 traindf = train
