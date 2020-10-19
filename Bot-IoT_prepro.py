@@ -1,12 +1,18 @@
-import tensorflow
-from tensorflow import keras
+#import tensorflow
+#from tensorflow import keras
+
+import keras
 
 import pickle
 import joblib
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout
-from tensorflow.keras.optimizers import SGD
+#from tensorflow.keras.models import Sequential
+#from tensorflow.keras.layers import Dense, Dropout
+#from tensorflow.keras.optimizers import SGD
+
+from keras.models import Sequential
+from keras.layers import Dense, Dropout
+from keras.optimizers import SGD
 
 from sklearn.preprocessing import StandardScaler
 
@@ -17,8 +23,8 @@ import numpy as np
 import pandas as pd
 
 
-train = pd.read_csv('datasets/Best_Training.csv')
-test = pd.read_csv('datasets/Best_Testing.csv')
+train = pd.read_csv('../datasets/Best_Training.csv') #he cambiado el directorio
+test = pd.read_csv('../datasets/Best_Testing.csv')
 """Recopilar dataset"""
 
 traindf = train
@@ -65,8 +71,14 @@ precedentdf = pd.get_dummies(precedentdf)
 #print(precedentdf.columns)
 targetdf = pd.get_dummies(targetdf, dtype=np.float32)
 #print(targetdf.columns)
+maxs = precedentdf.max()
+maxs = maxs.to_numpy()
 precedent = precedentdf.to_numpy()
-precedent = StandardScaler().fit_transform(precedent)
+
+for j in range(0,precedent.shape[1]):
+    precedent[:,j] = precedent[:,j]/maxs[j]
+
+#precedent = StandardScaler().fit_transform(precedent)
 target = targetdf.to_numpy()
 #print(target.shape)
 #fin preproceso training
@@ -90,9 +102,6 @@ for i in range(0,733699):
     if "0x" in test[i,4]:
         test[i,4] = test[i,4].replace('0x','')
         test[i,4] = int(test[i,4], 16)
-
-    #if (test[i,15] != 1):
-    
 
 newCol1 = pd.Series(test[:,1], name='saddr')
 newCol2 = pd.Series(test[:,2], name='sport')
@@ -122,8 +131,13 @@ auxCol = test[:,1]
 tar_testdf.insert(6, 'subcategory_Data_Exfiltration', auxCol, True)
 #print(tar_testdf.columns)
 
+maxs = pre_testdf.max()
+maxs = maxs.to_numpy()
 pre_test = pre_testdf.to_numpy()
-pre_test = StandardScaler().fit_transform(pre_test)
+
+for j in range(0,pre_test.shape[1]):
+    pre_test[:,j] = pre_test[:,j]/maxs[j]
+
 tar_test = tar_testdf.to_numpy()
 #print(pre_test.shape)
 #print(tar_test.shape)
@@ -133,10 +147,11 @@ tar_test = tar_testdf.to_numpy()
 
 validation_pair = pre_test, tar_test
 training_pair = precedent, target
+'''
 
 with open('datasets/val_dataset.pickle.pickle', 'wb') as f:
     joblib.dump(validation_pair, f)
 
 with open('datasets/train_dataset.pickle', 'wb') as f:
     joblib.dump(training_pair, f)
-
+'''
