@@ -1,30 +1,27 @@
-#import tensorflow
-#from tensorflow import keras
+import tensorflow
+from tensorflow import keras
 
-import keras
+#import keras
 
 import pickle
-import joblib
+#import joblib
 
-#from tensorflow.keras.models import Sequential
-#from tensorflow.keras.layers import Dense, Dropout
-#from tensorflow.keras.optimizers import SGD
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.optimizers import SGD
 
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
-from keras.optimizers import SGD
+#from keras.models import Sequential
+#from keras.layers import Dense, Dropout
+#from keras.optimizers import SGD
 
 from sklearn.preprocessing import StandardScaler
-
-
-#from sklearn.preprocessing import StandardScaler
 
 import numpy as np
 import pandas as pd
 
 
-train = pd.read_csv('../datasets/Best_Training.csv') #he cambiado el directorio
-test = pd.read_csv('../datasets/Best_Testing.csv')
+train = pd.read_csv('datasets/Best_Training.csv') #he cambiado el directorio
+test = pd.read_csv('datasets/Best_Testing.csv')
 """Recopilar dataset"""
 
 traindf = train
@@ -67,18 +64,18 @@ precedentdf['saddr'] = precedentdf['saddr'].astype(int)
 precedentdf['sport'] = precedentdf['sport'].astype(int)
 precedentdf['daddr'] = precedentdf['daddr'].astype(int)
 precedentdf['dport'] = precedentdf['dport'].astype(int)
-precedentdf = pd.get_dummies(precedentdf)
+precedentdf = pd.get_dummies(precedentdf, dtype=np.float32)
 #print(precedentdf.columns)
 targetdf = pd.get_dummies(targetdf, dtype=np.float32)
 #print(targetdf.columns)
-maxs = precedentdf.max()
-maxs = maxs.to_numpy()
+#maxs = precedentdf.max()
+#maxs = maxs.to_numpy()
 precedent = precedentdf.to_numpy()
 
-for j in range(0,precedent.shape[1]):
-    precedent[:,j] = precedent[:,j]/maxs[j]
+#for j in range(0,precedent.shape[1]):
+#    precedent[:,j] = precedent[:,j]/maxs[j]
 
-#precedent = StandardScaler().fit_transform(precedent)
+precedent = StandardScaler().fit_transform(precedent)
 target = targetdf.to_numpy()
 #print(target.shape)
 #fin preproceso training
@@ -131,14 +128,15 @@ auxCol = test[:,1]
 tar_testdf.insert(6, 'subcategory_Data_Exfiltration', auxCol, True)
 #print(tar_testdf.columns)
 
-maxs = pre_testdf.max()
-maxs = maxs.to_numpy()
-pre_test = pre_testdf.to_numpy()
+#maxs = pre_testdf.max()
+#maxs = maxs.to_numpy()
+pre_test = pre_testdf.to_numpy(dtype=np.float32)
 
-for j in range(0,pre_test.shape[1]):
-    pre_test[:,j] = pre_test[:,j]/maxs[j]
+#for j in range(0,pre_test.shape[1]):
+#    pre_test[:,j] = pre_test[:,j]/maxs[j]
 
-tar_test = tar_testdf.to_numpy()
+pre_test = StandardScaler().fit_transform(pre_test)
+tar_test = tar_testdf.to_numpy(dtype=np.float32)
 #print(pre_test.shape)
 #print(tar_test.shape)
 #print(tar_test[0])
@@ -147,11 +145,8 @@ tar_test = tar_testdf.to_numpy()
 
 validation_pair = pre_test, tar_test
 training_pair = precedent, target
-'''
-
-with open('datasets/val_dataset.pickle.pickle', 'wb') as f:
-    joblib.dump(validation_pair, f)
+with open('datasets/validation_dataset.pickle', 'wb') as f:
+    pickle.dump(validation_pair, f)
 
 with open('datasets/train_dataset.pickle', 'wb') as f:
-    joblib.dump(training_pair, f)
-'''
+    pickle.dump(training_pair, f)

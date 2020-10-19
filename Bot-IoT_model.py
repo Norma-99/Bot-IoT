@@ -7,20 +7,19 @@ from tensorflow.keras.optimizers import SGD
 
 from sklearn.preprocessing import StandardScaler
 
-#from sklearn.preprocessing import StandardScaler
-
 import numpy as np
 import pandas as pd
 
-import joblib
+#import joblib
+import pickle
 
 def load_data(path):
     with open(path, 'rb') as f:
-        return joblib.load(f)
+        return pickle.load(f)
 
 
 x_train, y_train = load_data('datasets/train_dataset.pickle')
-x_test, y_test = load_data('datasets/val_dataset.pickle')
+x_test, y_test = load_data('datasets/validation_dataset.pickle')
 
 
 def classification_model():
