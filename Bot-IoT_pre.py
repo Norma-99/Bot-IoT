@@ -1,14 +1,13 @@
-import keras
+import tensorflow as tf
+from tensorflow import keras
 
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
-from keras.optimizers import SGD
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.optimizers import SGD
 
 from sklearn.preprocessing import StandardScaler
 
-import matplotlib.pyplot as plt
-
-#from sklearn.preprocessing import StandardScaler
+#import matplotlib.pyplot as plt
 
 import numpy as np
 import pandas as pd
